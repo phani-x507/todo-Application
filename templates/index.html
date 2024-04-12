@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <style>
+        .borders {
+            border: 1px solid transparent;
+        }
+
+        body {
+
+            background: #0F2027;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #2C5364, #203A43, #0F2027);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            font-family: "Merriweather", serif;
+        }
+
+        .subbody {
+            background-color: white;
+            min-height: 600px;
+            min-width: 500px;
+            width: 500px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 0px 15px 1px #2C5364;
+        }
+
+        .subbody h1 {
+            margin-top: 15px;
+        }
+
+        h1 {
+            margin: 0px;
+            font-size: 40px;
+        }
+
+        .buttons1 {
+            margin-top: 5px;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .ctype1 {
+            font-family: "Merriweather", serif;
+            height: 50px;
+            width: 49%;
+            background-color: transparent;
+            border: 0px solid;
+            border-bottom: 3px solid #435596;
+            transition-duration: 0.2s;
+        }
+
+        .ctype1:hover {
+            cursor: pointer;
+            background-color: lavender;
+        }
+
+        .ctype1:active {
+            background-color: lightcoral;
+        }
+
+        .pending1 {
+            height: 430px;
+            background-color: #FFF8F8;
+            display: block;
+            padding: 5px;
+            overflow: scroll;
+            overflow-x:  hidden;
+        }
+        .task_view{
+            height: 40px;
+            border-radius: 7px;
+            background-color: #F9EAF2  ;
+            display: flex;
+            padding: 7px;
+            margin-top: 3px;
+            box-shadow: 0px 0px 1px 1px white;
+            border-color: lavender;
+            
+        }
+        .msg_div{
+            width: 70%;
+
+            vertical-align: middle;
+        }
+        .msg_div p{
+            margin: 10px;
+        }
+        .mini_btn{
+            height: 30px;
+            width: 30px;
+            background-color: transparent;
+            border: 1px solid transparent;
+            margin-top: 5px;
+            margin-left: 5px;
+            padding: 0px;
+            cursor: pointer;
+        }
+        .div1{
+            height: 50px;
+            display: flex;
+            background-color: white;
+            box-shadow: 0px 0px 10px 1px #435596;
+        }
+        .inp1{
+            height: 45px;
+            font-family: 'Merriweather';
+            width: 400px;
+            margin-right: 10px;
+            border: 0px solid transparent;
+            outline: transparent;
+            margin-left: 10px;
+        
+        }
+        .hov2{
+            height: 30px;
+            background-color: coral;
+            font-family: 'merriweather';
+            border-color: transparent;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<script>
+    function change_color() {
+        his = document.getElementById('historydiv').style.display = "none"
+        pds = document.getElementById('pendingdiv').style.display = "block"
+        document.getElementById('hello1').value = pds + "1"
+        if (pds == "block") {
+            document.getElementById('pdtbtn1').style.backgroundColor = "lavender"
+        }
+    }
+    function click1() {
+        document.getElementById('pendingdiv').style.display = "block"
+        his = document.getElementById('historydiv').style.display = "none"
+        document.getElementById('pdtbtn1').style.backgroundColor = "lavender"
+        document.getElementById('hisbtn1').style.backgroundColor = "transparent"
+
+    }
+    function click2() {
+        his = document.getElementById('pendingdiv').style.display = "none"
+        document.getElementById('historydiv').style.display = "block"
+        document.getElementById('hisbtn1').style.backgroundColor = "lavender"
+        document.getElementById('pdtbtn1').style.backgroundColor = "transparent"
+    }
+    
+</script>
+
+<body onload="change_color()">
+    <div class="subbody borders">
+        <h1 class="borders" style="text-align: center;">TODO</h1>
+        <div class="buttons1 borders">
+            <button id="pdtbtn1" onclick="click1()" class="ctype1"> Pending Tasks </button>
+            <button id="hisbtn1" onclick="click2()" class="ctype1">History</button>
+        </div>
+
+        <div id="pendingdiv" class="pending1 borders">
+            <form action="/add_row" method="post">
+            <div class="div1 borders">
+                <input name="addtext" class="inp1" type="text" placeholder="Add Task">
+                <button style="border: 1px;width: 50px;padding: 0px;" class="ctype1"><img height="30px" src="https://cdn-icons-png.flaticon.com/512/2312/2312159.png" alt=""></button>
+            </div>
+        </form>
+            <!-- Task View Starts Here -->
+            {% for i in output %}
+            <form action="/checked_row" method="post">
+            <div class="task_view borders" >
+                <img src="https://static-00.iconduck.com/assets.00/task-due-icon-2048x2048-3j4sao5k.png" alt="">
+                <div class="msg_div borders">
+                    <p style="margin-left: 10px;">{{i['Message']}}</p>
+                </div>
+                <button onclick="" name="delbtn" value="{{i['Message']}}" class="mini_btn"><img height="100%" src="https://static-00.iconduck.com/assets.00/task-complete-icon-2048x2048-w9dgm0at.png" alt="" ></button>
+            </div>
+        </form>
+            {% endfor %}
+            <!-- Task View Ends Here -->
+        </div>
+        <div id="historydiv" class="pending1 borders">
+            {% for i in hist %}
+            <div class="task_view borders" >
+                <img src="https://static-00.iconduck.com/assets.00/task-complete-icon-2048x2048-w9dgm0at.png" alt="">
+                <div class="msg_div borders">
+                    <p style="margin-left: 10px;">{{i['Message']}}</p>
+                </div>
+
+                <p  style="margin-left: 10px;font-size: 10px;">{{i['Timestamp']}}</p>
+            </div>
+            {% endfor %}
+            
+        </div>
+        <div style="display: flex;">
+        <p style="margin-left:15px ;">{{count}} Tasks are Pending</p>
+        <form action="/del_hist" method="post">
+            <button class="hov2" style="margin-left: 100px;margin-top: 10px;"> Clear History</button>
+        </form>
+    </div>
+    </div>
+</body>
+
+</html>
+
+<!-- {% for i in output %}
+    <h1>{{i['Message']}}</h1>
+    {% endfor %} -->
